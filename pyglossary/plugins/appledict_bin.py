@@ -98,7 +98,11 @@ class Reader(object):
 				word = re.search('d:title="(.*?)"', entry).group(1)
 				defis = [
 					defi.strip()
-					for defi in re.findall("<pre>(.*?)</pre>", entry, re.S)
+					for _, defi in re.findall(
+						r"<(?P<tag>pre|div)[^>]*?>(.*?)</(?P=tag)>",
+						entry,
+						re.S,
+					)
 				]
 				yield self._glos.newEntry(
 					word,
